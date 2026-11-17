@@ -6,6 +6,7 @@ import { LoadingScreen } from "./components/layout/LoadingScreen";
 import { CustomCursor } from "./components/layout/CustomCursor";
 import { ScrollProgress } from "./components/layout/ScrollProgress";
 import { Navbar } from "./components/layout/Navbar";
+import { SectionRail } from "./components/layout/SectionRail";
 import { Footer } from "./components/layout/Footer";
 import { Hero } from "./components/sections/Hero";
 import { About } from "./components/sections/About";
@@ -108,6 +109,7 @@ export default function App() {
             </AnimatePresence>
 
             <Navbar />
+            <SectionRail />
 
             <main id="main" className="relative z-10">
               <Hero revealed={revealed} />

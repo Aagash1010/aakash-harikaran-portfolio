@@ -95,6 +95,69 @@ function CaseBlock({
   );
 }
 
+function LinkDestination({
+  label,
+  href,
+  icon,
+  description,
+  actionLabel,
+  onAction,
+}: {
+  label: string;
+  href: string | null;
+  icon: React.ReactNode;
+  description: string;
+  actionLabel: string;
+  onAction: () => void;
+}) {
+  return (
+    <div className="border border-line p-5">
+      <div className="flex items-center justify-between gap-3">
+        <span className="flex items-center gap-2 mono-label text-muted">
+          {icon}
+          {label}
+        </span>
+        {href ? (
+          <span className="inline-flex items-center gap-1.5 border border-lime/30 bg-lime-soft px-2 py-1 font-mono text-[6px] uppercase tracking-[0.14em] text-accent">
+            <Check size={8} strokeWidth={2} aria-hidden />
+            Available
+          </span>
+        ) : (
+          <span className="border border-dashed border-line px-2 py-1 font-mono text-[6px] uppercase tracking-[0.14em] text-muted/60">
+            Pending
+          </span>
+        )}
+      </div>
+      <p className="mt-3 text-[12px] leading-relaxed text-muted/80">{description}</p>
+      {href ? (
+        <ButtonLink
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          variant="outline"
+          size="sm"
+          className="mt-4"
+          aria-label={`Open ${label} — opens in a new tab`}
+          icon={<ArrowUpRight size={12} strokeWidth={1.6} />}
+        >
+          Open destination
+        </ButtonLink>
+      ) : (
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          className="mt-4"
+          onClick={onAction}
+          icon={<ArrowUpRight size={12} strokeWidth={1.6} />}
+        >
+          {actionLabel}
+        </Button>
+      )}
+    </div>
+  );
+}
+
 export function ProjectPage({ project }: { project: Project }) {
   const { notify } = useToast();
   const reduced = useReducedMotion();
@@ -237,6 +300,37 @@ export function ProjectPage({ project }: { project: Project }) {
                   Ask about this build
                 </ButtonLink>
               </Magnetic>
+              {project.repo ? (
+                <Magnetic strength={0.16}>
+                  <ButtonLink
+                    href={project.repo}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    variant="outline"
+                    size="sm"
+                    aria-label={`Open the GitHub repository for ${project.title} — opens in a new tab`}
+                    icon={<GithubMark size={12} />}
+                    iconSide="left"
+                  >
+                    GitHub
+                  </ButtonLink>
+                </Magnetic>
+              ) : null}
+              {project.demo ? (
+                <Magnetic strength={0.16}>
+                  <ButtonLink
+                    href={project.demo}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    variant="outline"
+                    size="sm"
+                    aria-label={`Open the live demo of ${project.title} — opens in a new tab`}
+                    icon={<ArrowUpRight size={12} strokeWidth={1.6} />}
+                  >
+                    Live demo
+                  </ButtonLink>
+                </Magnetic>
+              ) : null}
             </Reveal>
           </div>
 
@@ -458,61 +552,38 @@ export function ProjectPage({ project }: { project: Project }) {
             <CaseBlock
               index="08"
               title="Repository & live demonstration"
-              description="No destination is invented"
+              description={
+                project.repo || project.demo
+                  ? "Verified destinations only"
+                  : "No destination is invented"
+              }
               className="mt-10 md:mt-12"
             >
               <div className="grid gap-4 sm:grid-cols-2">
-                <div className="border border-line p-5">
-                  <div className="flex items-center justify-between gap-3">
-                    <span className="flex items-center gap-2 mono-label text-muted">
-                      <GithubMark size={12} className="text-accent" />
-                      GitHub repository
-                    </span>
-                    <span className="border border-dashed border-line px-2 py-1 font-mono text-[6px] uppercase tracking-[0.14em] text-muted/60">
-                      Pending
-                    </span>
-                  </div>
-                  <p className="mt-3 text-[12px] leading-relaxed text-muted/80">
-                    The source repository is not published yet. No placeholder
-                    URL has been invented.
-                  </p>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    className="mt-4"
-                    onClick={pendingRepo}
-                    icon={<ArrowUpRight size={12} strokeWidth={1.6} />}
-                  >
-                    Link status
-                  </Button>
-                </div>
-
-                <div className="border border-line p-5">
-                  <div className="flex items-center justify-between gap-3">
-                    <span className="flex items-center gap-2 mono-label text-muted">
-                      <ArrowUpRight size={12} className="text-accent" />
-                      Live demo
-                    </span>
-                    <span className="border border-dashed border-line px-2 py-1 font-mono text-[6px] uppercase tracking-[0.14em] text-muted/60">
-                      Pending
-                    </span>
-                  </div>
-                  <p className="mt-3 text-[12px] leading-relaxed text-muted/80">
-                    A hosted demonstration is not available yet. The build is
-                    documented from its verified scope.
-                  </p>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    className="mt-4"
-                    onClick={pendingDemo}
-                    icon={<ArrowUpRight size={12} strokeWidth={1.6} />}
-                  >
-                    Demo status
-                  </Button>
-                </div>
+                <LinkDestination
+                  label="GitHub repository"
+                  href={project.repo}
+                  icon={<GithubMark size={12} className="text-accent" />}
+                  description={
+                    project.repo
+                      ? "The source repository for this build is published and linked directly."
+                      : "The source repository is not published yet. No placeholder URL has been invented."
+                  }
+                  actionLabel="Repository status"
+                  onAction={pendingRepo}
+                />
+                <LinkDestination
+                  label="Live demo"
+                  href={project.demo}
+                  icon={<ArrowUpRight size={12} className="text-accent" />}
+                  description={
+                    project.demo
+                      ? "A hosted demonstration of this build is available and linked directly."
+                      : "A hosted demonstration is not available yet. The build is documented from its verified scope."
+                  }
+                  actionLabel="Demo status"
+                  onAction={pendingDemo}
+                />
               </div>
             </CaseBlock>
           </div>

@@ -146,7 +146,7 @@ export function Hero({ revealed }: { revealed: boolean }) {
             variants={container}
             initial={reduced ? false : "hidden"}
             animate={revealed ? "visible" : "hidden"}
-            className="relative z-10 min-w-0 lg:col-span-8"
+            className="pointer-drift--soft relative z-10 min-w-0 lg:col-span-8"
           >
             <motion.ul
               variants={row}
@@ -419,9 +419,16 @@ export function Hero({ revealed }: { revealed: boolean }) {
             <button
               type="button"
               onClick={() => scrollToSection("about")}
-              className="group ml-auto hidden items-center gap-2 transition-colors hover:text-accent lg:inline-flex"
+              className="group ml-auto inline-flex items-center gap-2.5 transition-colors hover:text-accent"
             >
-              Scroll to explore
+              <span
+                aria-hidden
+                className="relative hidden h-7 w-3 items-start justify-center rounded-full border border-line/80 transition-colors group-hover:border-accent/50 sm:flex"
+              >
+                <span className="scroll-cue mt-1 size-1 rounded-full bg-lime" />
+              </span>
+              <span className="sm:hidden">Scroll</span>
+              <span className="hidden sm:inline">Scroll to explore</span>
               <ArrowDownRight
                 size={13}
                 strokeWidth={1.6}

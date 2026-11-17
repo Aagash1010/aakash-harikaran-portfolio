@@ -1,4 +1,10 @@
-import { motion, useReducedMotion } from "framer-motion";
+import { useRef } from "react";
+import {
+  motion,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+} from "framer-motion";
 import { ArrowUpRight, Layers, Plus, Sparkles } from "lucide-react";
 import { GithubMark } from "../ui/BrandIcons";
 import { projects, type Project } from "../../data/profile";
@@ -10,6 +16,7 @@ import { Reveal } from "../ui/Reveal";
 import { Button, ButtonLink } from "../ui/Button";
 import { TiltCard } from "../ui/TiltCard";
 import { ProjectVisual } from "../visuals/ProjectVisual";
+import { ProjectUniverse } from "./ProjectUniverse";
 
 function usePlaceholderLinks(project: Project) {
   const { notify } = useToast();
@@ -30,6 +37,12 @@ function ProjectRow({ project, index }: { project: Project; index: number }) {
   const reduced = useReducedMotion();
   const links = usePlaceholderLinks(project);
   const href = `/work/${project.id}`;
+  const mediaRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: mediaRef,
+    offset: ["start end", "end start"],
+  });
+  const mediaY = useTransform(scrollYProgress, [0, 1], [16, -16]);
 
   return (
     <article
@@ -64,29 +77,44 @@ function ProjectRow({ project, index }: { project: Project; index: number }) {
             data-cursor-label="VIEW CASE"
             className="group/preview block w-full text-left"
           >
-            <div className="relative">
-              <TiltCard
-                max={5}
-                hoverScale={0.006}
-                className="relative overflow-hidden border border-line bg-panel transition-[border-color,box-shadow] duration-500 group-hover/preview:border-accent/40 group-hover/preview:shadow-[0_50px_110px_-52px_rgba(198,255,77,0.4)]"
+            <motion.div
+              ref={mediaRef}
+              style={reduced ? undefined : { y: mediaY }}
+              className="relative"
+            >
+              <motion.div
+                initial={
+                  reduced
+                    ? false
+                    : { clipPath: "inset(0 0 18% 0)", opacity: 0.35 }
+                }
+                whileInView={{ clipPath: "inset(0 0 0% 0)", opacity: 1 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 1.1, ease: EASE_OUT }}
               >
-                <div className="transition-transform duration-[1100ms] ease-out group-hover/preview:scale-[1.03]">
-                  <ProjectVisual project={project} />
-                </div>
-
-                <div
-                  aria-hidden
-                  className="pointer-events-none absolute inset-x-0 bottom-0 z-[4] flex translate-y-full items-center justify-between gap-4 bg-gradient-to-t from-[#080808] via-[#080808]/85 to-transparent px-4 pb-4 pt-12 transition-transform duration-500 ease-out group-hover/preview:translate-y-0 sm:px-5"
+                <TiltCard
+                  max={5}
+                  hoverScale={0.006}
+                  className="relative overflow-hidden border border-line bg-panel transition-[border-color,box-shadow] duration-500 group-hover/preview:border-accent/40 group-hover/preview:shadow-[0_50px_110px_-52px_rgba(198,255,77,0.4)]"
                 >
-                  <span className="font-mono text-[8px] uppercase tracking-[0.2em] text-[#f5f5f5]">
-                    View case study
-                  </span>
-                  <span className="grid size-8 place-items-center rounded-full bg-[#c6ff4d] text-[#080808]">
-                    <ArrowUpRight size={14} strokeWidth={1.8} />
-                  </span>
-                </div>
-              </TiltCard>
-            </div>
+                  <div className="transition-transform duration-[1100ms] ease-out group-hover/preview:scale-[1.045]">
+                    <ProjectVisual project={project} />
+                  </div>
+
+                  <div
+                    aria-hidden
+                    className="pointer-events-none absolute inset-x-0 bottom-0 z-[4] flex translate-y-full items-center justify-between gap-4 bg-gradient-to-t from-[#080808] via-[#080808]/85 to-transparent px-4 pb-4 pt-12 transition-transform duration-500 ease-out group-hover/preview:translate-y-0 sm:px-5"
+                  >
+                    <span className="font-mono text-[8px] uppercase tracking-[0.2em] text-[#f5f5f5]">
+                      View case study
+                    </span>
+                    <span className="grid size-8 place-items-center rounded-full bg-[#c6ff4d] text-[#080808]">
+                      <ArrowUpRight size={14} strokeWidth={1.8} />
+                    </span>
+                  </div>
+                </TiltCard>
+              </motion.div>
+            </motion.div>
 
             <div className="mt-3 flex items-center justify-between gap-4 font-mono text-[7px] uppercase tracking-[0.18em] text-muted/50">
               <span>Custom abstract panel / not a screenshot</span>
@@ -137,16 +165,31 @@ function ProjectRow({ project, index }: { project: Project; index: number }) {
               </p>
             </div>
 
-            <div className="mt-5 flex flex-wrap gap-1.5">
+            <motion.div
+              initial={reduced ? false : "hidden"}
+              whileInView="show"
+              viewport={{ once: true, amount: 0.4 }}
+              variants={{
+                hidden: {},
+                show: { transition: { staggerChildren: 0.045 } },
+              }}
+              className="mt-5 flex flex-wrap gap-1.5"
+            >
               {project.stack.map((tech) => (
-                <span
+                <motion.span
                   key={tech.name}
-                  className="border border-line px-2.5 py-1.5 font-mono text-[7px] uppercase tracking-[0.13em] text-muted transition-colors duration-300 group-hover:border-accent/25 group-hover:text-ink/85"
+                  variants={{
+                    hidden: { opacity: 0, y: 8 },
+                    show: { opacity: 1, y: 0 },
+                  }}
+                  transition={{ duration: 0.45, ease: EASE_OUT }}
+                  whileHover={reduced ? undefined : { y: -2 }}
+                  className="border border-line px-2.5 py-1.5 font-mono text-[7px] uppercase tracking-[0.13em] text-muted transition-colors duration-300 hover:border-accent/45 hover:text-ink group-hover:border-accent/25 group-hover:text-ink/85"
                 >
                   {tech.name}
-                </span>
+                </motion.span>
               ))}
-            </div>
+            </motion.div>
 
             <div className="mt-6 flex flex-wrap items-center gap-2.5">
               <ButtonLink
@@ -157,29 +200,60 @@ function ProjectRow({ project, index }: { project: Project; index: number }) {
               >
                 View case study
               </ButtonLink>
-              <Button
-                type="button"
-                variant="quiet"
-                size="sm"
-                onClick={links.github}
-                aria-label={`GitHub repository for ${project.title} — link pending`}
-                icon={<GithubMark size={12} />}
-                iconSide="left"
-                className="text-muted"
-              >
-                GitHub
-              </Button>
-              <Button
-                type="button"
-                variant="quiet"
-                size="sm"
-                onClick={links.demo}
-                aria-label={`Live demo for ${project.title} — link pending`}
-                icon={<ArrowUpRight size={12} strokeWidth={1.6} />}
-                className="text-muted"
-              >
-                Live demo
-              </Button>
+              {project.repo ? (
+                <ButtonLink
+                  href={project.repo}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  variant="quiet"
+                  size="sm"
+                  aria-label={`GitHub repository for ${project.title} — opens in a new tab`}
+                  icon={<GithubMark size={12} />}
+                  iconSide="left"
+                  className="text-muted"
+                >
+                  GitHub
+                </ButtonLink>
+              ) : (
+                <Button
+                  type="button"
+                  variant="quiet"
+                  size="sm"
+                  onClick={links.github}
+                  aria-label={`GitHub repository for ${project.title} — link pending`}
+                  icon={<GithubMark size={12} />}
+                  iconSide="left"
+                  className="text-muted"
+                >
+                  GitHub
+                </Button>
+              )}
+              {project.demo ? (
+                <ButtonLink
+                  href={project.demo}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  variant="quiet"
+                  size="sm"
+                  aria-label={`Live demo for ${project.title} — opens in a new tab`}
+                  icon={<ArrowUpRight size={12} strokeWidth={1.6} />}
+                  className="text-muted"
+                >
+                  Live demo
+                </ButtonLink>
+              ) : (
+                <Button
+                  type="button"
+                  variant="quiet"
+                  size="sm"
+                  onClick={links.demo}
+                  aria-label={`Live demo for ${project.title} — link pending`}
+                  icon={<ArrowUpRight size={12} strokeWidth={1.6} />}
+                  className="text-muted"
+                >
+                  Live demo
+                </Button>
+              )}
             </div>
           </Reveal>
         </div>
@@ -213,7 +287,7 @@ export function Projects() {
               case studies<span className="text-lime">.</span>
             </>,
           ]}
-          description="Four builds documented as engineering case studies: the problem, the solution, the technologies and my contribution. Each opens as a dedicated page. Visual panels are custom abstractions, not fabricated screenshots."
+          description="Four builds documented as engineering case studies: the problem, the solution, the technologies and my contribution. Explore them as an interactive observatory, then open any case file. Visual panels are custom abstractions, not fabricated screenshots."
         />
 
         <Reveal y={14} className="mt-8 md:mt-10">
@@ -230,6 +304,21 @@ export function Projects() {
             </span>
           </div>
         </Reveal>
+
+        <ProjectUniverse />
+
+        <div className="mt-14 flex flex-wrap items-end justify-between gap-4 border-b border-line pb-4 md:mt-20">
+          <div>
+            <span className="mono-label text-accent">Case file index</span>
+            <p className="mt-2 font-display text-xl font-bold uppercase leading-none tracking-[-0.03em] text-ink sm:text-2xl">
+              Full dossiers
+              <span className="text-lime">.</span>
+            </p>
+          </div>
+          <p className="max-w-sm font-mono text-[7px] uppercase leading-relaxed tracking-[0.16em] text-muted/50">
+            The four rows below hold the complete written case studies.
+          </p>
+        </div>
 
         <div className="mt-12 space-y-16 md:mt-16 md:space-y-24 lg:space-y-28">
           {projects.map((project, index) => (
