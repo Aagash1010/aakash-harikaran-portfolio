@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+# Update the sitemap URL once the portfolio has a production domain.

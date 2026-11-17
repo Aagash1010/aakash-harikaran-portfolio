@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="dark light" />
+
+    <title>Aagash Harikaran — Software Developer &amp; AI Enthusiast</title>
+    <meta
+      name="description"
+      content="Aagash Harikaran is a software developer and AI enthusiast from Sri Lanka, studying BSc (Hons) Information Technology at SLIIT. Explore full-stack case studies, technical skills and experience."
+    />
+    <meta name="author" content="Aagash Harikaran" />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#080808" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Aagash Harikaran — Software Developer" />
+    <meta property="og:title" content="Aagash Harikaran — Software Developer &amp; AI Enthusiast" />
+    <meta
+      property="og:description"
+      content="Full-stack engineering, artificial intelligence and thoughtful digital products. Explore the work, skills and experience of Aagash Harikaran."
+    />
+    <meta property="og:image" content="/og-image.svg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Aagash Harikaran — Beyond the Interface" />
+    <meta property="og:locale" content="en_US" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Aagash Harikaran — Software Developer &amp; AI Enthusiast" />
+    <meta
+      name="twitter:description"
+      content="Full-stack engineering, artificial intelligence and thoughtful digital products."
+    />
+    <meta name="twitter:image" content="/og-image.svg" />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
+    <link
+      rel="preload"
+      as="image"
+      href="/portrait.jpg"
+      imagesrcset="/portrait-sm.jpg 640w, /portrait-md.jpg 900w, /portrait.jpg 1215w"
+      imagesizes="(min-width: 1024px) 25rem, (min-width: 640px) 22rem, 80vw"
+      fetchpriority="high"
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <script>
+      // Apply the saved theme before first paint to prevent a flash.
+      (function () {
+        try {
+          var saved = localStorage.getItem("ak-theme");
+          var theme = saved === "light" ? "light" : "dark";
+          document.documentElement.dataset.theme = theme;
+          document
+            .querySelector('meta[name="theme-color"]')
+            .setAttribute("content", theme === "light" ? "#f4f4ef" : "#080808");
+        } catch (error) {
+          document.documentElement.dataset.theme = "dark";
+        }
+      })();
+    </script>
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Aagash Harikaran",
+        "jobTitle": "Software Developer",
+        "email": "mailto:aagash1004@gmail.com",
+        "description": "Software developer and AI enthusiast from Sri Lanka, specializing in full-stack development and artificial intelligence.",
+        "sameAs": [
+          "https://www.linkedin.com/in/harikaran-aagash-aa13b9254",
+          "https://github.com/Aagash1010"
+        ],
+        "address": {
+          "@type": "PostalAddress",
+          "addressCountry": "LK"
+        },
+        "alumniOf": {
+          "@type": "CollegeOrUniversity",
+          "name": "Sri Lanka Institute of Information Technology (SLIIT)"
+        },
+        "knowsAbout": [
+          "Software Engineering",
+          "Artificial Intelligence",
+          "Machine Learning",
+          "Full-Stack Development",
+          "React",
+          "Java",
+          "Spring Boot",
+          "MySQL"
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <a
+      href="#main"
+      class="fixed left-4 top-4 z-[300] -translate-y-24 bg-lime px-4 py-2 font-mono text-[11px] uppercase tracking-widest text-[#080808] transition-transform focus:translate-y-0"
+    >
+      Skip to content
+    </a>
+    <div id="root"></div>
+    <noscript>
+      <div style="padding: 2rem; font-family: sans-serif; background: #080808; color: #f5f5f5">
+        <h1>Aagash Harikaran</h1>
+        <p>
+          Software Developer | AI Enthusiast | Creative Technologist. This portfolio needs JavaScript
+          enabled for the full interactive experience.
+        </p>
+      </div>
+    </noscript>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
