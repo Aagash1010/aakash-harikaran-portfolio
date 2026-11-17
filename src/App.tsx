@@ -16,6 +16,7 @@ import { Interests } from "./components/sections/Interests";
 import { Contact } from "./components/sections/Contact";
 import { NotFound } from "./pages/NotFound";
 import { ProjectPage } from "./pages/ProjectPage";
+import { AmbientField } from "./components/visuals/AmbientField";
 import { getProject } from "./data/profile";
 import { scrollToSection } from "./lib/utils";
 
@@ -96,6 +97,7 @@ export default function App() {
     <ThemeProvider>
       <ToastProvider>
         <CustomCursor />
+        <AmbientField />
 
         {home ? (
           <>

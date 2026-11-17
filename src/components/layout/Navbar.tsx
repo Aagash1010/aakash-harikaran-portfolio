@@ -116,7 +116,7 @@ export function Navbar() {
                     onBlur={() => setHovered(null)}
                     aria-current={isActive ? "true" : undefined}
                     className={cn(
-                      "group relative rounded-full px-3.5 py-2 font-mono text-[9px] uppercase tracking-[0.16em] transition-colors duration-300",
+                      "group relative rounded-full px-3 py-2 font-mono text-[9px] uppercase tracking-[0.16em] transition-colors duration-300 xl:px-3.5",
                       isActive
                         ? "text-accent"
                         : isHighlighted
@@ -161,7 +161,9 @@ export function Navbar() {
                   {profile.availability.short}
                 </span>
               </span>
-              <SriLankaClock className="mr-1 hidden 2xl:flex" />
+              <div className="mr-1 hidden 2xl:block">
+                <SriLankaClock />
+              </div>
               <a
                 href={profile.cv}
                 download

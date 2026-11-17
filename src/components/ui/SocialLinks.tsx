@@ -33,9 +33,9 @@ export function SocialLinks({
       {profile.socials.map((social) => {
         const Icon = iconMap[social.icon];
         const sharedClassName = cn(
-          "group/social flex items-center transition-colors duration-300",
+          "group/social flex items-center transition-[color,border-color,background-color,transform] duration-300 ease-out active:scale-[0.97]",
           variant === "icons"
-            ? "size-10 items-center justify-center rounded-full border border-line text-muted hover:border-accent/50 hover:text-accent hover:bg-lime-soft"
+            ? "size-10 items-center justify-center rounded-full border border-line text-muted hover:-translate-y-0.5 hover:border-accent/50 hover:bg-lime-soft hover:text-accent"
             : "w-full justify-between border-b border-line py-4 text-ink hover:text-accent",
           itemClassName,
         );

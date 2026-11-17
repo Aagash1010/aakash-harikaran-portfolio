@@ -13,7 +13,7 @@ export function ThemeToggle({ className }: { className?: string }) {
       aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
       title={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
       className={cn(
-        "relative grid size-9 place-items-center rounded-full border border-line text-muted transition-colors hover:border-accent/40 hover:text-accent",
+        "relative grid size-9 place-items-center rounded-full border border-line text-muted transition-[color,border-color,transform] duration-300 ease-out hover:border-accent/40 hover:text-accent active:scale-90",
         className,
       )}
     >

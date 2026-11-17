@@ -5,11 +5,11 @@ type ButtonVariant = "primary" | "outline" | "quiet";
 type ButtonSize = "md" | "sm";
 
 const base =
-  "group relative inline-flex items-center justify-center gap-3 whitespace-nowrap font-mono uppercase tracking-[0.16em] transition-all duration-300 disabled:pointer-events-none disabled:opacity-50";
+  "group relative inline-flex items-center justify-center gap-3 whitespace-nowrap font-mono uppercase tracking-[0.16em] transition-all duration-300 ease-out active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50";
 
 const variants: Record<ButtonVariant, string> = {
   primary:
-    "rounded-full bg-lime text-[#080808] hover:bg-[#d9ff80] hover:-translate-y-0.5 shadow-[0_12px_40px_-18px_rgba(198,255,77,0.75)]",
+    "btn-sheen rounded-full bg-lime text-[#080808] shadow-[0_12px_40px_-18px_rgba(198,255,77,0.75)] hover:bg-[#d9ff80] hover:-translate-y-0.5 active:-translate-y-0",
   outline:
     "rounded-full border border-line text-ink hover:border-accent/60 hover:text-accent hover:bg-lime-soft",
   quiet:

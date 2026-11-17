@@ -7,6 +7,7 @@ import { EASE_OUT } from "../../lib/motion";
 import { Reveal } from "../ui/Reveal";
 import { SectionHeading } from "../ui/SectionHeading";
 import { TechIcon } from "../ui/TechIcon";
+import { TiltCard } from "../ui/TiltCard";
 
 const BASE_ANGLES = [-90, -30, 30, 90, 150, 210];
 const NODE_RADIUS = 35;
@@ -110,7 +111,11 @@ export function Skills() {
         <div className="mt-10 grid gap-10 md:mt-14 lg:grid-cols-12 lg:items-start lg:gap-12 xl:gap-16">
           {/* ---------- Desktop constellation ---------- */}
           <div className="hidden min-w-0 lg:col-span-8 lg:block">
-            <div className="relative mx-auto aspect-square w-full max-w-[42rem]">
+            <TiltCard
+              max={2.2}
+              hoverScale={0}
+              className="relative mx-auto aspect-square w-full max-w-[42rem]"
+            >
               <div
                 aria-hidden
                 className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(198,255,77,0.055),transparent_62%)]"
@@ -118,7 +123,7 @@ export function Skills() {
 
               <svg
                 viewBox="0 0 100 100"
-                className="absolute inset-0 h-full w-full"
+                className="pointer-drift absolute inset-0 h-full w-full"
                 aria-hidden="true"
               >
                 <circle
@@ -251,7 +256,7 @@ export function Skills() {
                     categoryIndex === activeCategory && skillIndex === activeSkill;
 
                   return (
-                    <button
+                    <motion.button
                       key={`${item.id}-${entry.name}`}
                       type="button"
                       onClick={() => select(categoryIndex, skillIndex)}
@@ -259,6 +264,17 @@ export function Skills() {
                       onFocus={() => select(categoryIndex, skillIndex)}
                       aria-pressed={isActive}
                       aria-label={`${entry.name} — ${entry.note}. ${item.label} territory.`}
+                      initial={reduced ? false : { opacity: 0 }}
+                      whileInView={{ opacity: 1 }}
+                      viewport={{ once: true, amount: 0.2 }}
+                      transition={{
+                        duration: 0.5,
+                        delay: Math.min(
+                          0.55,
+                          0.08 + (categoryIndex * 3 + skillIndex) * 0.024,
+                        ),
+                        ease: EASE_OUT,
+                      }}
                       className={cn(
                         "group absolute z-20 grid size-9 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border transition-all duration-300",
                         isActive
@@ -278,7 +294,7 @@ export function Skills() {
                           className="absolute inset-0 rounded-full border border-accent/30 motion-safe:animate-[pulse-ring_2.4s_ease-out_infinite]"
                         />
                       ) : null}
-                    </button>
+                    </motion.button>
                   );
                 }),
               )}
@@ -290,7 +306,7 @@ export function Skills() {
                 <MousePointer2 size={9} aria-hidden />
                 Select a node
               </span>
-            </div>
+            </TiltCard>
           </div>
 
           {/* ---------- Detail panel (desktop only; mobile has its own index) ---------- */}

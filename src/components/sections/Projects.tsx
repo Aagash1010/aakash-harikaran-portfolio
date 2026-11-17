@@ -8,6 +8,7 @@ import { EASE_OUT } from "../../lib/motion";
 import { SectionHeading } from "../ui/SectionHeading";
 import { Reveal } from "../ui/Reveal";
 import { Button, ButtonLink } from "../ui/Button";
+import { TiltCard } from "../ui/TiltCard";
 import { ProjectVisual } from "../visuals/ProjectVisual";
 
 function usePlaceholderLinks(project: Project) {
@@ -63,22 +64,28 @@ function ProjectRow({ project, index }: { project: Project; index: number }) {
             data-cursor-label="VIEW CASE"
             className="group/preview block w-full text-left"
           >
-            <div className="relative overflow-hidden border border-line bg-panel transition-colors duration-500 group-hover/preview:border-accent/40">
-              <div className="transition-transform duration-[1100ms] ease-out group-hover/preview:scale-[1.03]">
-                <ProjectVisual project={project} />
-              </div>
-
-              <div
-                aria-hidden
-                className="pointer-events-none absolute inset-x-0 bottom-0 flex translate-y-full items-center justify-between gap-4 bg-gradient-to-t from-[#080808] via-[#080808]/85 to-transparent px-4 pb-4 pt-12 transition-transform duration-500 ease-out group-hover/preview:translate-y-0 sm:px-5"
+            <div className="relative">
+              <TiltCard
+                max={5}
+                hoverScale={0.006}
+                className="relative overflow-hidden border border-line bg-panel transition-[border-color,box-shadow] duration-500 group-hover/preview:border-accent/40 group-hover/preview:shadow-[0_50px_110px_-52px_rgba(198,255,77,0.4)]"
               >
-                <span className="font-mono text-[8px] uppercase tracking-[0.2em] text-[#f5f5f5]">
-                  View case study
-                </span>
-                <span className="grid size-8 place-items-center rounded-full bg-[#c6ff4d] text-[#080808]">
-                  <ArrowUpRight size={14} strokeWidth={1.8} />
-                </span>
-              </div>
+                <div className="transition-transform duration-[1100ms] ease-out group-hover/preview:scale-[1.03]">
+                  <ProjectVisual project={project} />
+                </div>
+
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute inset-x-0 bottom-0 z-[4] flex translate-y-full items-center justify-between gap-4 bg-gradient-to-t from-[#080808] via-[#080808]/85 to-transparent px-4 pb-4 pt-12 transition-transform duration-500 ease-out group-hover/preview:translate-y-0 sm:px-5"
+                >
+                  <span className="font-mono text-[8px] uppercase tracking-[0.2em] text-[#f5f5f5]">
+                    View case study
+                  </span>
+                  <span className="grid size-8 place-items-center rounded-full bg-[#c6ff4d] text-[#080808]">
+                    <ArrowUpRight size={14} strokeWidth={1.8} />
+                  </span>
+                </div>
+              </TiltCard>
             </div>
 
             <div className="mt-3 flex items-center justify-between gap-4 font-mono text-[7px] uppercase tracking-[0.18em] text-muted/50">

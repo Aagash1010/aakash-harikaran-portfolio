@@ -131,7 +131,9 @@ export function Footer() {
             <span aria-hidden className="text-line">/</span>
             <span>{profile.location}</span>
             <span aria-hidden className="hidden text-line sm:inline">/</span>
-            <SriLankaClock className="hidden sm:flex" showDate />
+            <div className="hidden sm:block">
+              <SriLankaClock showDate />
+            </div>
           </div>
 
           <nav aria-label="Footer" className="flex flex-wrap items-center gap-x-5 gap-y-2">

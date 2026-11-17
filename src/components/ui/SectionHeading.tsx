@@ -1,4 +1,6 @@
+import { motion, useReducedMotion } from "framer-motion";
 import { Reveal, MaskLine } from "./Reveal";
+import { EASE_OUT } from "../../lib/motion";
 import { cn } from "../../lib/utils";
 
 interface SectionHeadingProps {
@@ -20,11 +22,20 @@ export function SectionHeading({
   titleClassName,
   id,
 }: SectionHeadingProps) {
+  const reduced = useReducedMotion();
+
   return (
     <div className={cn("relative", className)}>
       <Reveal className="flex items-center gap-3.5" y={14}>
         <span className="mono-label text-accent">{index}</span>
-        <span aria-hidden className="h-px w-8 bg-line sm:w-12" />
+        <motion.span
+          aria-hidden
+          className="h-px w-8 origin-left bg-line sm:w-12"
+          initial={reduced ? false : { scaleX: 0 }}
+          whileInView={{ scaleX: 1 }}
+          viewport={{ once: true, amount: 0.6 }}
+          transition={{ duration: 0.9, delay: 0.12, ease: EASE_OUT }}
+        />
         <span className="mono-label text-muted">{label}</span>
         <span
           aria-hidden
@@ -59,9 +70,14 @@ export function SectionHeading({
         ) : null}
       </div>
 
-      <Reveal delay={0.24} y={10} className="mt-9 md:mt-12">
-        <div className="hairline" />
-      </Reveal>
+      <motion.div
+        aria-hidden
+        className="mt-9 h-px w-full origin-left bg-line md:mt-12"
+        initial={reduced ? false : { scaleX: 0, opacity: 0 }}
+        whileInView={{ scaleX: 1, opacity: 1 }}
+        viewport={{ once: true, amount: 0.6 }}
+        transition={{ duration: 1.1, delay: 0.24, ease: EASE_OUT }}
+      />
     </div>
   );
 }

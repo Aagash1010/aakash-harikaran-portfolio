@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import {
   ArrowLeft,
   ArrowRight,
@@ -19,10 +20,12 @@ import {
 } from "../data/profile";
 import { useToast } from "../context/ToastProvider";
 import { cn, scrollToSection } from "../lib/utils";
+import { EASE_OUT } from "../lib/motion";
 import { GithubMark, LinkedinMark } from "../components/ui/BrandIcons";
 import { Button, ButtonLink } from "../components/ui/Button";
 import { Magnetic } from "../components/ui/Magnetic";
 import { MaskLine, Reveal } from "../components/ui/Reveal";
+import { TiltCard } from "../components/ui/TiltCard";
 import { ProjectVisual } from "../components/visuals/ProjectVisual";
 
 const statusCopy: Record<CaseStudyStatus, string> = {
@@ -85,13 +88,16 @@ function CaseBlock({
           </p>
         ) : null}
       </div>
-      <div className="mt-6">{children}</div>
+      <Reveal y={16} amount={0.12} className="mt-6">
+        {children}
+      </Reveal>
     </section>
   );
 }
 
 export function ProjectPage({ project }: { project: Project }) {
   const { notify } = useToast();
+  const reduced = useReducedMotion();
   const currentIndex = projects.findIndex((entry) => entry.id === project.id);
   const previous = projects[(currentIndex - 1 + projects.length) % projects.length];
   const next = projects[(currentIndex + 1) % projects.length];
@@ -138,7 +144,13 @@ export function ProjectPage({ project }: { project: Project }) {
     );
 
   return (
-    <main id="main" className="relative z-10 pb-16 pt-24 sm:pt-28 lg:pb-24 lg:pt-32">
+    <motion.main
+      id="main"
+      initial={reduced ? false : { opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.65, ease: EASE_OUT }}
+      className="relative z-10 pb-16 pt-24 sm:pt-28 lg:pb-24 lg:pt-32"
+    >
       <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-[42rem]">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_54%_46%_at_76%_8%,rgba(198,255,77,0.07),transparent_70%)]" />
         <div className="absolute inset-0 blueprint-grid opacity-30 [mask-image:linear-gradient(to_bottom,black,transparent_78%)]" />
@@ -287,9 +299,13 @@ export function ProjectPage({ project }: { project: Project }) {
 
         {/* ---------- Visual ---------- */}
         <Reveal y={22} className="mt-10 md:mt-14">
-          <div className="overflow-hidden border border-line">
+          <TiltCard
+            max={3.5}
+            hoverScale={0.004}
+            className="overflow-hidden border border-line"
+          >
             <ProjectVisual project={project} />
-          </div>
+          </TiltCard>
           <div className="mt-2.5 flex flex-wrap items-center justify-between gap-x-6 gap-y-1.5 font-mono text-[6.5px] uppercase tracking-[0.16em] text-muted/50">
             <span>Custom abstract panel — not a screenshot</span>
             <span>
@@ -646,6 +662,6 @@ export function ProjectPage({ project }: { project: Project }) {
           </a>
         </nav>
       </div>
-    </main>
+    </motion.main>
   );
 }
